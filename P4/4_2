@@ -1,0 +1,104 @@
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <cmath>
+
+struct City {
+    std::string name;
+    int x;
+    int y;
+};
+
+std::vector<City> cities;
+
+void insertCity(const std::string& name, int x, int y) {
+    City city;
+    city.name = name;
+    city.x = x;
+    city.y = y;
+    cities.push_back(city);
+}
+
+void deleteCity(const std::string& name) {
+    for (int i = 0; i < cities.size(); i++) {
+        if (cities[i].name == name) {
+            cities.erase(cities.begin() + i);
+            i--;
+        }
+    }
+}
+
+void deleteCity(int x, int y) {
+    for (int i = 0; i < cities.size(); i++) {
+        if (cities[i].x == x && cities[i].y == y) {
+            cities.erase(cities.begin() + i);
+            i--;
+        }
+    }
+}
+
+std::vector<City> searchCity(const std::string& name) {
+    std::vector<City> results;
+    for (int i = 0; i < cities.size(); i++) {
+        if (cities[i].name == name) {
+            results.push_back(cities[i]);
+        }
+    }
+    return results;
+}
+
+std::vector<City> searchCity(int x, int y) {
+    std::vector<City> results;
+    for (int i = 0; i < cities.size(); i++) {
+        if (cities[i].x == x && cities[i].y == y) {
+            results.push_back(cities[i]);
+        }
+    }
+    return results;
+}
+
+void printCitiesWithinDistance(int x, int y, int distance) {
+    for (int i = 0; i < cities.size(); i++) {
+        int dx = cities[i].x - x;
+        int dy = cities[i].y - y;
+        if (std::sqrt(dx * dx + dy * dy) <= distance) {
+            std::cout << cities[i].name << " " << cities[i].x << " " << cities[i].y << std::endl;
+        }
+    }
+}
+
+int main() {
+    
+   //take user input
+    std::string name;
+    int x;
+    int y;
+    int distance;
+    std::cout << "Enter a city name: ";
+    std::cin >> name;
+    std::cout << "Enter the x coordinate: ";
+    std::cin >> x;
+    std::cout << "Enter the y coordinate: ";
+    std::cin >> y;
+    std::cout << "Enter the distance: ";
+    std::cin >> distance;
+    
+    //insert city
+    insertCity(name, x, y);
+    
+    //search city
+    std::vector<City> searchResults = searchCity(name);
+    for (int i = 0; i < searchResults.size(); i++) {
+        std::cout << searchResults[i].name << " " << searchResults[i].x << " " << searchResults[i].y << std::endl;
+    }
+    
+    //delete city
+    deleteCity(name);
+    
+    //print cities within distance
+    printCitiesWithinDistance(x, y, distance);
+    
+    return 0;
+}
+
